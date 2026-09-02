@@ -83,10 +83,9 @@
                         v-model="form.regionPaths"
                         :options="regionOptions"
                         multiple
-                        collapse-tags
-                        collapse-tags-tooltip
                         clearable
                         filterable
+                        :show-all-levels="true"
                         placeholder="可多选省 / 市 / 区县" /></el-form-item
                 ><el-form-item label="状态"
                     ><el-radio-group v-model="form.enabled"
@@ -128,6 +127,21 @@ const regionOptions = [
         ]
     },
     {
+        value: '湖南省',
+        label: '湖南省',
+        children: [
+            {
+                value: '长沙市',
+                label: '长沙市',
+                children: [
+                    { value: '开福区', label: '开福区' },
+                    { value: '岳麓区', label: '岳麓区' },
+                    { value: '芙蓉区', label: '芙蓉区' }
+                ]
+            }
+        ]
+    },
+    {
         value: '四川省',
         label: '四川省',
         children: [
@@ -138,11 +152,18 @@ const regionOptions = [
 const regionSamples = [
     ['广东省', '广州市', '天河区'],
     ['上海市', '浦东新区'],
+    ['湖南省', '长沙市', '开福区'],
     ['四川省', '成都市', '武侯区']
 ]
 const rows = reactive<any[]>(
     Array.from({ length: 18 }, (_, i) => {
-        const paths = [regionSamples[i % regionSamples.length]]
+        const paths =
+            i === 2
+                ? [
+                      ['湖南省', '长沙市', '开福区'],
+                      ['湖南省', '长沙市', '岳麓区']
+                  ]
+                : [regionSamples[i % regionSamples.length]]
         return {
             id: `XS${10001 + i}`,
             name: ['张晨', '李伟', '王芳', '赵磊'][i % 4],

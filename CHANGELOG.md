@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.59 - 2026-09-02
+
+- Improved salesperson sales-region selection to visibly support multiple full province/city/district paths, including Hunan Changsha Kaifu and Yuelu districts.
+
 ## 0.0.58 - 2026-09-02
 
 - Changed reward-batch creation to associate one product without a product quantity field.
