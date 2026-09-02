@@ -1,0 +1,9 @@
+[core]
+	repositoryformatversion = 0
+	filemode = false
+	bare = true
+	symlinks = false
+	ignorecase = true
+[remote "origin"]
+	url = https://github.com/Kui0105/1528-01-pc.ue.ehaiba.net.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
