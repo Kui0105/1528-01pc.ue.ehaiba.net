@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.0.58 - 2026-09-02
+
+- Changed reward-batch creation to associate one product without a product quantity field.
+- Kept salesperson sales-region selection as a multi-select administrative-region cascader.
+
 ## 0.0.57 - 2026-09-02
 
 - Added the production environment configuration with the API base URL `https://likeadmin.l.440.red:9443/`.

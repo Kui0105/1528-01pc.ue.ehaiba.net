@@ -128,39 +128,15 @@
                                     value="华南经销商" /></el-select></el-form-item></el-col
                     ><el-col :span="24"
                         ><el-form-item label="关联产品" required
-                            ><div class="dynamic-list">
-                                <div
-                                    v-for="(item, index) in createForm.products"
-                                    :key="index"
-                                    class="dynamic-row"
-                                >
-                                    <el-select v-model="item.name" placeholder="选择产品"
-                                        ><el-option
-                                            label="青柠气泡水"
-                                            value="青柠气泡水" /><el-option
-                                            label="经典原味茶"
-                                            value="经典原味茶" /><el-option
-                                            label="轻乳茶礼盒"
-                                            value="轻乳茶礼盒" /></el-select
-                                    ><el-input-number
-                                        v-model="item.count"
-                                        :min="1"
-                                        controls-position="right"
-                                    /><el-button
-                                        link
-                                        type="danger"
-                                        @click="createForm.products.splice(index, 1)"
-                                        >移除</el-button
-                                    >
-                                </div>
-                                <el-button
-                                    link
-                                    type="primary"
-                                    @click="createForm.products.push({ name: '', count: 1 })"
-                                    >+ 添加产品</el-button
-                                >
-                            </div></el-form-item
-                        ></el-col
+                            ><el-select
+                                v-model="createForm.product"
+                                placeholder="选择产品"
+                                class="single-product-select"
+                                ><el-option label="青柠气泡水" value="青柠气泡水" /><el-option
+                                    label="经典原味茶"
+                                    value="经典原味茶" /><el-option
+                                    label="轻乳茶礼盒"
+                                    value="轻乳茶礼盒" /></el-select></el-form-item></el-col
                     ><el-col :span="24"
                         ><el-form-item label="关联奖项" required
                             ><div class="dynamic-list">
@@ -308,7 +284,7 @@ const createForm = reactive({
     totalBatch: '',
     batchNo: '',
     dealer: '',
-    products: [{ name: '', count: 1 }],
+    product: '',
     prizes: [{ name: '', rate: 0, stock: 1 }],
     count: 5000,
     status: '正常'
@@ -323,7 +299,6 @@ const rows = reactive<any[]>(
             totalBatch: `ZP202608${21 + i}`,
             dealer: ['华东经销商', '华南经销商'][i % 2],
             product: ['青柠气泡水', '经典原味茶'][i % 2],
-            products: [{ name: ['青柠气泡水', '经典原味茶'][i % 2], count }],
             generated: i % 3 ? '已生成' : '未生成',
             status: i % 5 ? '正常' : '禁用',
             prizes: [
@@ -373,7 +348,7 @@ const openCreate = () => {
         totalBatch: '',
         batchNo: `JM${Date.now()}`,
         dealer: '',
-        products: [{ name: '', count: 1 }],
+        product: '',
         prizes: [{ name: '', rate: 0, stock: 1 }],
         count: 5000,
         status: '正常'
@@ -385,8 +360,7 @@ const createBatch = () => {
         !createForm.totalBatch ||
         !createForm.batchNo ||
         !createForm.dealer ||
-        !createForm.products.length ||
-        createForm.products.some((item) => !item.name || !item.count) ||
+        !createForm.product ||
         !createForm.prizes.length ||
         createForm.prizes.some((item) => !item.name || !item.stock) ||
         !createForm.count
@@ -394,14 +368,13 @@ const createBatch = () => {
         return ElMessage.warning('请完整填写奖码批次信息')
     rows.unshift({
         ...createForm,
-        product: createForm.products.map((item) => item.name).join('、'),
-        count: createForm.products.reduce((sum, item) => sum + item.count, 0),
+        product: createForm.product,
         generated: '未生成',
         pending: createForm.count,
         unscanned: createForm.count,
         scanned: 0,
         winning: 0,
-        prizes: [{ name: '一等奖', rate: 1, stock: 20 }],
+        prizes: createForm.prizes.map((item) => ({ ...item })),
         logs: []
     })
     createVisible.value = false
