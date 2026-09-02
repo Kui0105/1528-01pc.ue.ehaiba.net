@@ -97,6 +97,9 @@
                             <el-radio-button value="activation">激活环比</el-radio-button>
                             <el-radio-button value="activity">动销环比</el-radio-button>
                         </el-radio-group>
+                        <el-select v-model="selectedSales" size="small" class="sales-select" @change="applyComparisonFilter" placeholder="选择销售人员">
+                            <el-option v-for="item in salesOptions" :key="item.value" :label="item.label" :value="item.value" />
+                        </el-select>
                         <el-radio-group v-model="comparisonType" size="small" @change="resetComparisonRange">
                             <el-radio-button value="month">月份环比</el-radio-button>
                             <el-radio-button value="year">年份环比</el-radio-button>
@@ -218,6 +221,8 @@ const productOptions = ['青柠气泡水', '经典原味茶', '轻乳茶']
 const selectedProduct = ref(productOptions[0])
 const comparisonType = ref<ComparisonType>('month')
 const comparisonMetric = ref<ComparisonMetric>('store')
+const salesOptions = [{ label: '全部销售', value: 'all' }, { label: '张伟', value: 'zhangwei' }, { label: '李娜', value: 'lina' }, { label: '王强', value: 'wangqiang' }, { label: '陈晨', value: 'chenchen' }]
+const selectedSales = ref('all')
 const comparisonStart = ref('2026-07')
 const comparisonEnd = ref('2026-08')
 const comparisonOptions = computed(() => comparisonType.value === 'month'
@@ -489,7 +494,8 @@ const applyComparisonFilter = () => {
     const labels = comparisonType.value === 'month' ? monthLabels : yearLabels
     const startIndex = comparisonOptions.value.indexOf(comparisonStart.value) + 1
     const endIndex = comparisonOptions.value.indexOf(comparisonEnd.value) + 1
-    const base = metricBase[comparisonMetric.value]
+    const salesFactor = selectedSales.value === 'all' ? 1 : salesOptions.find((item) => item.value === selectedSales.value)?.value === 'zhangwei' ? 1.12 : selectedSales.value === 'lina' ? 0.92 : selectedSales.value === 'wangqiang' ? 1.06 : 0.98
+    const base = metricBase[comparisonMetric.value] * salesFactor
     const createSeries = (periodIndex: number, uplift: number) => labels.map((_, index) => Math.round(base * (1 + index * 0.08 + periodIndex * 0.018 + uplift)))
     const startData = createSeries(Math.max(startIndex, 1), 0)
     const endData = createSeries(Math.max(endIndex, 1), 0.08)
@@ -620,6 +626,7 @@ onMounted(() => {
 .comparison-header { justify-content: space-between; gap: 16px; }
 .comparison-filters { flex-wrap: wrap; justify-content: flex-end; gap: 8px; }
 .comparison-filters :deep(.el-select) { width: 104px; }
+.comparison-filters :deep(.sales-select) { width: 128px; }
 .comparison-subtitle { margin-top: 5px; color: var(--el-text-color-secondary); font-size: 12px; }
 .comparison-separator { color: var(--el-text-color-secondary); font-size: 13px; }
 

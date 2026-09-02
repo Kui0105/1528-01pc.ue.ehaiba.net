@@ -1,5 +1,28 @@
 # Changelog
 
+## 0.0.56 - 2026-09-02
+
+- Added visible navigation icons for Sales Management and Sales List.
+- Added the salesperson ID column and simplified status switches to icon-only controls.
+
+## 0.0.55 - 2026-09-02
+
+- Added Sales Management navigation and a mock salesperson list with filters, export, status, and CRUD actions.
+
+## 0.0.54 - 2026-09-01
+
+- Restored multiple product quantities and multiple prize configurations to reward-batch creation.
+
+## 0.0.53 - 2026-09-01
+
+- Changed the workbench sales filter to a salesperson dropdown and applied salesperson-specific mock comparison data.
+
+## 0.0.52 - 2026-09-01
+
+- Added sales comparison filtering to the workbench trend chart.
+- Added product unit fields, dealer multi-select sales regions, and prize-detail user phone filters.
+- Restored the reward-batch creation entry with mock data support.
+
 ## 0.0.51 - 2026-08-28
 
 - Added production environment configuration for `https://likeadmin.l.440.red:9443/`.
