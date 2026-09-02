@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.57 - 2026-09-02
+
+- Added the production environment configuration with the API base URL `https://likeadmin.l.440.red:9443/`.
+
 ## 0.0.56 - 2026-09-02
 
 - Added visible navigation icons for Sales Management and Sales List.
