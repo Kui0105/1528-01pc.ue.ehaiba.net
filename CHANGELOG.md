@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.61 - 2026-09-02
+
+- Optimized the salesperson region multi-select in the dialog with full-width layout, collapsed tags, and overflow-safe display.
+
 ## 0.0.60 - 2026-09-02
 
 - Improved salesperson region tags with truncated display and full hover text.

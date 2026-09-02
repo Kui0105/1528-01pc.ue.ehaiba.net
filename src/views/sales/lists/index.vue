@@ -92,6 +92,8 @@
                         v-model="form.regionPaths"
                         :options="regionOptions"
                         multiple
+                        collapse-tags
+                        collapse-tags-tooltip
                         clearable
                         filterable
                         :props="{ multiple: true, emitPath: true, checkStrictly: false }"
@@ -321,6 +323,22 @@ const exportSales = () => {
 .region-tags :deep(.el-tag) {
     flex: 0 0 auto;
     max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.sales-page :deep(.el-dialog .el-form-item__content) {
+    min-width: 0;
+}
+.sales-page :deep(.el-dialog .el-cascader) {
+    width: 100%;
+}
+.sales-page :deep(.el-dialog .el-cascader__tags) {
+    max-width: calc(100% - 36px);
+    overflow: hidden;
+    white-space: nowrap;
+}
+.sales-page :deep(.el-dialog .el-cascader__tags .el-tag) {
+    max-width: 185px;
     overflow: hidden;
     text-overflow: ellipsis;
 }
