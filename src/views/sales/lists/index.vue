@@ -41,12 +41,21 @@
                     prop="phone"
                     label="联系电话"
                     min-width="170"
-                /><el-table-column
-                    prop="region"
-                    label="销售区域"
-                    min-width="280"
-                    show-overflow-tooltip
-                /><el-table-column label="状态" width="120"
+                /><el-table-column label="销售区域" min-width="280"
+                    ><template #default="{ row }"
+                        ><el-tooltip :content="row.region" placement="top" effect="dark"
+                            ><div class="region-tags">
+                                <el-tag
+                                    v-for="path in row.regionPaths"
+                                    :key="path.join('-')"
+                                    size="small"
+                                    type="info"
+                                    >{{ path.join(' / ') }}</el-tag
+                                >
+                            </div></el-tooltip
+                        ></template
+                    ></el-table-column
+                ><el-table-column label="状态" width="120"
                     ><template #default="{ row }"
                         ><el-switch
                             v-model="row.enabled"
@@ -85,6 +94,7 @@
                         multiple
                         clearable
                         filterable
+                        :props="{ multiple: true, emitPath: true, checkStrictly: false }"
                         :show-all-levels="true"
                         placeholder="可多选省 / 市 / 区县" /></el-form-item
                 ><el-form-item label="状态"
@@ -217,19 +227,28 @@ const openForm = (row?: any) => {
     formVisible.value = true
 }
 const saveRow = () => {
-    if (!form.name || !form.phone || !form.regionPaths.length)
+    const selectedPaths = form.regionPaths.filter(
+        (path): path is string[] => Array.isArray(path) && path.length > 0
+    )
+    if (!form.name.trim() || !form.phone.trim() || !selectedPaths.length)
         return ElMessage.warning('请完整填写销售资料')
-    const region = form.regionPaths.map((p) => p.join(' / ')).join('；')
+    const region = selectedPaths.map((p) => p.join(' / ')).join('；')
     if (editingId.value) {
         const row = rows.find((r) => r.id === editingId.value)
         if (row)
             Object.assign(row, {
                 ...form,
                 region,
-                regionPaths: form.regionPaths.map((p) => [...p])
+                regionPaths: selectedPaths.map((p) => [...p])
             })
     } else
-        rows.unshift({ ...form, id: `XS${Date.now()}`, region, createdAt: '2026-09-02 10:00:00' })
+        rows.unshift({
+            ...form,
+            region,
+            regionPaths: selectedPaths.map((p) => [...p]),
+            id: `XS${Date.now()}`,
+            createdAt: '2026-09-02 10:00:00'
+        })
     formVisible.value = false
     ElMessage.success(editingId.value ? '销售已更新' : '销售已新增')
 }
@@ -291,5 +310,18 @@ const exportSales = () => {
 }
 .sales-page :deep(.el-dialog .el-cascader) {
     width: 100%;
+}
+.region-tags {
+    display: flex;
+    gap: 6px;
+    max-width: 260px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.region-tags :deep(.el-tag) {
+    flex: 0 0 auto;
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 </style>

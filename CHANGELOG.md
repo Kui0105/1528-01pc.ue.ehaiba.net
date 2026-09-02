@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.0.60 - 2026-09-02
+
+- Improved salesperson region tags with truncated display and full hover text.
+- Fixed salesperson form confirmation handling and explicit multi-district cascader selection.
+
 ## 0.0.59 - 2026-09-02
 
 - Improved salesperson sales-region selection to visibly support multiple full province/city/district paths, including Hunan Changsha Kaifu and Yuelu districts.
