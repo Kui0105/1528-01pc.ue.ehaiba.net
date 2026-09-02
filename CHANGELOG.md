@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.0.62 - 2026-09-02
+
+- Added dealer point balances and recharge actions.
+- Added dealer point detail navigation, filters, recharge records, and export mock data.
+
 ## 0.0.61 - 2026-09-02
 
 - Optimized the salesperson region multi-select in the dialog with full-width layout, collapsed tags, and overflow-safe display.

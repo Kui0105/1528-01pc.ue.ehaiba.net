@@ -67,6 +67,7 @@
                 <el-table-column prop="email" label="邮箱" min-width="180" />
                 <el-table-column prop="contact" label="联系人" min-width="110" />
                 <el-table-column prop="phone" label="联系电话" min-width="140" />
+                <el-table-column prop="points" label="积分余额" min-width="120" />
                 <el-table-column
                     prop="region"
                     label="地区/详细地址"
@@ -80,22 +81,18 @@
                 >
                 <el-table-column label="状态" width="100"
                     ><template #default="{ row }"
-                        ><el-switch
-                            v-model="row.enabled"
-                            inline-prompt
-                            active-text="启用"
-                            inactive-text="禁用"
-                            @change="toggleStatus(row)" /></template
+                        ><el-switch v-model="row.enabled" @change="toggleStatus(row)" /></template
                 ></el-table-column>
                 <el-table-column prop="createdAt" label="创建时间" min-width="170" />
                 <el-table-column
                     label="操作"
-                    width="150"
+                    width="220"
                     fixed="right"
                     class-name="last-column"
                     label-class-name="last-column"
                     ><template #default="{ row }"
                         ><el-button link type="primary" @click="openForm(row)">编辑</el-button
+                        ><el-button link type="success" @click="openRecharge(row)">充值</el-button
                         ><el-button link type="danger" @click="removeDealer(row)"
                             >删除</el-button
                         ></template
@@ -144,8 +141,19 @@
                                 clearable
                                 filterable
                                 placeholder="请选择省 / 市 / 区" /></el-form-item></el-col
-                ><el-col :span="24"><el-form-item label="销售区域" prop="salesRegions"><el-cascader v-model="form.salesRegions" :options="regionOptions" multiple collapse-tags collapse-tags-tooltip clearable filterable placeholder="可多选省 / 市 / 区县" /></el-form-item></el-col><el-col :span="24"
-                    ><el-form-item label="详细地址" prop="address"
+                    ><el-col :span="24"
+                        ><el-form-item label="销售区域" prop="salesRegions"
+                            ><el-cascader
+                                v-model="form.salesRegions"
+                                :options="regionOptions"
+                                multiple
+                                collapse-tags
+                                collapse-tags-tooltip
+                                clearable
+                                filterable
+                                placeholder="可多选省 / 市 / 区县" /></el-form-item></el-col
+                    ><el-col :span="24"
+                        ><el-form-item label="详细地址" prop="address"
                             ><el-input
                                 v-model="form.address"
                                 placeholder="请输入街道、道路、门牌号等" /></el-form-item></el-col
@@ -164,6 +172,38 @@
                 ><el-button type="primary" @click="saveDealer">确认</el-button></template
             >
         </el-dialog>
+        <el-dialog v-model="rechargeVisible" title="经销商积分充值" width="520px"
+            ><el-form :model="rechargeForm" label-width="110px"
+                ><el-form-item label="充值类型"
+                    ><el-radio-group v-model="rechargeForm.type"
+                        ><el-radio value="增加">增加</el-radio
+                        ><el-radio value="扣减">扣减</el-radio></el-radio-group
+                    ></el-form-item
+                ><el-form-item label="充值数值"
+                    ><el-input-number
+                        v-model="rechargeForm.amount"
+                        :min="1"
+                        :step="100" /></el-form-item
+                ><el-form-item label="充值后余额"
+                    ><span class="balance-preview">{{
+                        rechargeTarget
+                            ? rechargeTarget.points +
+                              (rechargeForm.type === '增加'
+                                  ? rechargeForm.amount
+                                  : -rechargeForm.amount)
+                            : 0
+                    }}</span></el-form-item
+                ><el-form-item label="说明"
+                    ><el-input
+                        v-model="rechargeForm.remark"
+                        type="textarea"
+                        :rows="3"
+                        placeholder="请输入充值说明" /></el-form-item></el-form
+            ><template #footer
+                ><el-button @click="rechargeVisible = false">取消</el-button
+                ><el-button type="primary" @click="confirmRecharge">确认充值</el-button></template
+            ></el-dialog
+        >
     </div>
 </template>
 
@@ -242,6 +282,7 @@ interface Dealer {
     salesRegions: string[][]
     address: string
     enabled: boolean
+    points: number
     createdAt: string
 }
 const regionSamples = [
@@ -270,6 +311,7 @@ const dealers = reactive<Dealer[]>(
             salesRegions: [regionPath],
             address: `${regionPath.join('')}示例商务园区${88 + index}号${index % 2 ? 'A座1203室' : '沿街商铺2-108号'}`,
             enabled: index % 6 !== 0,
+            points: 6800 + index * 520,
             createdAt: `2026-08-${String(28 - (index % 20)).padStart(2, '0')} 10:20:00`
         }
     })
@@ -308,6 +350,9 @@ const resetFilters = () => {
 }
 const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' })
 const formVisible = ref(false)
+const rechargeVisible = ref(false)
+const rechargeTarget = ref<Dealer>()
+const rechargeForm = reactive({ type: '增加', amount: 100, remark: '' })
 const editingId = ref('')
 const formRef = ref<FormInstance>()
 const form = reactive({
@@ -368,6 +413,19 @@ const saveDealer = async () => {
     formVisible.value = false
     ElMessage.success(editingId.value ? '经销商已更新' : '经销商已新增')
 }
+const openRecharge = (dealer: Dealer) => {
+    rechargeTarget.value = dealer
+    Object.assign(rechargeForm, { type: '增加', amount: 100, remark: '' })
+    rechargeVisible.value = true
+}
+const confirmRecharge = () => {
+    if (!rechargeTarget.value || !rechargeForm.amount || !rechargeForm.remark.trim())
+        return ElMessage.warning('请填写充值数值和说明')
+    const delta = rechargeForm.type === '增加' ? rechargeForm.amount : -rechargeForm.amount
+    rechargeTarget.value.points = Math.max(0, rechargeTarget.value.points + delta)
+    rechargeVisible.value = false
+    ElMessage.success('积分余额已更新')
+}
 const removeDealer = async (dealer: Dealer) => {
     try {
         await ElMessageBox.confirm(`确定删除“${dealer.name}”吗？删除后不可恢复`, '删除经销商', {
@@ -391,13 +449,24 @@ const toggleStatus = async (dealer: Dealer) => {
 }
 const exportDealers = () => {
     const data = [
-        ['经销商名称', '税号', '邮箱', '联系人', '联系电话', '地区/详细地址', '状态', '创建时间'],
+        [
+            '经销商名称',
+            '税号',
+            '邮箱',
+            '联系人',
+            '联系电话',
+            '积分余额',
+            '地区/详细地址',
+            '状态',
+            '创建时间'
+        ],
         ...filteredDealers.value.map((item) => [
             item.name,
             item.taxNo,
             item.email,
             item.contact,
             item.phone,
+            item.points,
             `${item.region}${item.address}`,
             item.enabled ? '启用' : '禁用',
             item.createdAt

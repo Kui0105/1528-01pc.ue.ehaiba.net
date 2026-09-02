@@ -159,6 +159,15 @@ const mockDetailMenu = {
             component: 'details/points/index',
             is_show: 1,
             is_cache: 0
+        },
+        {
+            paths: 'dealer-points',
+            name: '经销积分明细',
+            icon: 'local-icon-caiwu_jifen',
+            type: 'C',
+            component: 'details/dealer-points/index',
+            is_show: 1,
+            is_cache: 0
         }
     ]
 }
