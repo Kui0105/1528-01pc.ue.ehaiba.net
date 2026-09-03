@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.0.64 - 2026-09-03
+
+- Removed the limit and featured recommendation fields from the material-goods editor.
+- Removed the limit column from the material-goods list.
+
 ## 0.0.63 - 2026-09-03
 
 - Added Material Mall navigation with mock material goods, categories, and orders pages cloned from the Points Mall workflows.
