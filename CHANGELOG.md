@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.0.68 - 2026-09-03
+
+- Fixed the business-staff navigation icon by using the available supplier icon glyph.
+- Switched store mock storefront and shelf images to bundled local assets so both image columns always render.
+
 ## 0.0.67 - 2026-09-03
 
 - Added an explicit user icon to the business-staff navigation entry.

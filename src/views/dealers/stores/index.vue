@@ -94,6 +94,8 @@
     </div>
 </template>
 <script setup lang="ts" name="storeLists">
+import frontImage from '@/assets/images/blue1.png'
+import shelfImage from '@/assets/images/green1.png'
 const business = ['张明', '李婷', '王强', '赵颖']
 const dealers = ['华东食品商贸有限公司', '华南优选供应链有限公司', '华北盛达商贸有限公司']
 const rows = reactive<any[]>(
@@ -104,8 +106,8 @@ const rows = reactive<any[]>(
         phone: `139${String(10000000 + i * 131).slice(0, 8)}`,
         business: business[i % 4],
         dealer: dealers[i % 3],
-        frontImage: `https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=120&h=80&q=80&sig=${i}`,
-        shelfImage: `https://images.unsplash.com/photo-1601598851547-4302969d5e9d?auto=format&fit=crop&w=120&h=80&q=80&sig=${i}`,
+        frontImage,
+        shelfImage,
         region: ['湖南省长沙市开福区', '广东省广州市天河区', '上海市浦东新区'][i % 3],
         address: [
             '湖南省长沙市开福区福元西路88号',

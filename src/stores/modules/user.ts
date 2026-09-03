@@ -115,7 +115,7 @@ const mockDealerMenu = {
         {
             paths: 'business',
             name: '业务员列表',
-            icon: 'local-icon-user',
+            icon: 'local-icon-gongyingshang',
             type: 'C',
             component: 'dealers/business/index',
             is_show: 1,
