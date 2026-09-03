@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.0.66 - 2026-09-03
+
+- Added business points detail navigation and mock records.
+- Added business staff and store list navigation under Dealer Management with filters, recharge, deletion, pagination, and export actions.
+
+## 0.0.65 - 2026-09-03
+
+- Added business points detail mock data and export view.
+- Added business staff and store list entries under Dealer Management with filters, recharge, delete, pagination, and export actions.
+
 ## 0.0.64 - 2026-09-03
 
 - Removed the limit and featured recommendation fields from the material-goods editor.

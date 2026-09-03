@@ -111,6 +111,24 @@ const mockDealerMenu = {
             component: 'dealers/lists/index',
             is_show: 1,
             is_cache: 0
+        },
+        {
+            paths: 'business',
+            name: '业务员列表',
+            icon: 'local-icon-user',
+            type: 'C',
+            component: 'dealers/business/index',
+            is_show: 1,
+            is_cache: 0
+        },
+        {
+            paths: 'stores',
+            name: '门店列表',
+            icon: 'local-icon-goods',
+            type: 'C',
+            component: 'dealers/stores/index',
+            is_show: 1,
+            is_cache: 0
         }
     ]
 }
@@ -166,6 +184,15 @@ const mockDetailMenu = {
             icon: 'local-icon-caiwu_jifen',
             type: 'C',
             component: 'details/dealer-points/index',
+            is_show: 1,
+            is_cache: 0
+        },
+        {
+            paths: 'business-points',
+            name: '业务积分明细',
+            icon: 'local-icon-caiwu_jifen',
+            type: 'C',
+            component: 'details/business-points/index',
             is_show: 1,
             is_cache: 0
         }
