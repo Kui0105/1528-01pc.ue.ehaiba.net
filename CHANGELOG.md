@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.63 - 2026-09-03
+
+- Added Material Mall navigation with mock material goods, categories, and orders pages cloned from the Points Mall workflows.
+
 ## 0.0.62 - 2026-09-02
 
 - Added dealer point balances and recharge actions.

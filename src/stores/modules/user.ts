@@ -208,6 +208,43 @@ const mockPointsMallMenu = {
         }
     ]
 }
+const mockMaterialMallMenu = {
+    paths: 'material-mall',
+    name: '物料商城',
+    icon: 'local-icon-goods',
+    type: 'M',
+    is_show: 1,
+    is_cache: 0,
+    children: [
+        {
+            paths: 'goods',
+            name: '物料商品',
+            icon: 'local-icon-goods',
+            type: 'C',
+            component: 'material-mall/goods/index',
+            is_show: 1,
+            is_cache: 0
+        },
+        {
+            paths: 'category',
+            name: '物料分类',
+            icon: 'local-icon-list-2',
+            type: 'C',
+            component: 'material-mall/category/index',
+            is_show: 1,
+            is_cache: 0
+        },
+        {
+            paths: 'orders',
+            name: '物料订单',
+            icon: 'local-icon-dingdan',
+            type: 'C',
+            component: 'material-mall/orders/index',
+            is_show: 1,
+            is_cache: 0
+        }
+    ]
+}
 const mockWebsiteChildren = [
     {
         paths: 'rules',
@@ -299,6 +336,14 @@ const addMockBusinessMenus = (menus: any[]) => {
             detailIndex >= 0 ? detailIndex + 1 : insertedMenus.length,
             0,
             mockPointsMallMenu
+        )
+    }
+    if (!insertedMenus.some((item) => item.paths === 'material-mall')) {
+        const pointsMallIndex = insertedMenus.findIndex((item) => item.paths === 'points-mall')
+        insertedMenus.splice(
+            pointsMallIndex >= 0 ? pointsMallIndex + 1 : insertedMenus.length,
+            0,
+            mockMaterialMallMenu
         )
     }
     const findWebsite = (items: any[]): any => {
