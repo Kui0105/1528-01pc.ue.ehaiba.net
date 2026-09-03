@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.0.67 - 2026-09-03
+
+- Added an explicit user icon to the business-staff navigation entry.
+- Added mock storefront and shelf image columns to the store list and included image URLs in exports.
+
 ## 0.0.66 - 2026-09-03
 
 - Added business points detail navigation and mock records.
